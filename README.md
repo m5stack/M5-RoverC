@@ -6,7 +6,7 @@ Contains the driver of the M5Stack RoverC series to realize the movement of the 
 
 ## Related Link
 
-[Docment & Datasheet](https://docs.m5stack.com/en/hat/hat_roverc_pro)
+[Document & Datasheet](https://docs.m5stack.com/en/hat/hat_roverc_pro)
 
 ## License
 
