@@ -1,6 +1,6 @@
 {
-  "name": "M5_RoverC",
-  "description": "Library for M5Stack RoverC",
+  "name": "M5-RoverC",
+  "description": "Library for M5Stack RoverC & RoverC-Pro",
   "keywords": "M5Stack RoverC",
   "authors": {
     "name": "M5Stack",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/m5stack/M5_RoverC.git"
+    "url": "https://github.com/m5stack/M5-RoverC.git"
   },
   "version": "0.0.1",
   "frameworks": "arduino",
