@@ -2,6 +2,7 @@
 #include "M5_RoverC.h"
 
 TFT_eSprite canvas = TFT_eSprite(&M5.Lcd);
+M5_RoverC roverc;
 
 void setup() {
     M5.begin();
