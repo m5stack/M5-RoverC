@@ -3,7 +3,7 @@
 
 TFT_eSprite canvas = TFT_eSprite(&M5.Lcd);
 
-M5_ROVERC roverc;
+M5_RoverC roverc;
 
 void setup() {
     M5.begin();
