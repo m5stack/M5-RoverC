@@ -29,8 +29,7 @@ uint32_t count = 0;
 uint8_t servo = 0;
 
 void drawCenteredText(int y, const String &text, int textSize, uint16_t textColor);
-void view_head1(int textSize, int y);
-void view_head2(void);
+void view_head(void);
 unsigned long lastTime = 0;
 void setup()
 {
@@ -56,14 +55,7 @@ void setup()
     Serial.println(myIP);
     server.begin();
     Udp1.begin(1003);
-    m5::board_t board = M5.getBoard();
-    if (board == m5::board_t::board_M5StickC) {
-        view_head1(1, 10);
-    } else if (board == m5::board_t::board_M5StickCPlus) {
-        view_head1(2, 5);
-    } else if (board == m5::board_t::board_M5StickCPlus2) {
-        view_head2();
-    }
+    view_head();
     lastTime = millis();
 }
 
@@ -104,15 +96,8 @@ void loop()
     }
     count++;
     if (count > 5000) {
-        count             = 0;
-        m5::board_t board = M5.getBoard();
-        if (board == m5::board_t::board_M5StickC) {
-            view_head1(1, 10);
-        } else if (board == m5::board_t::board_M5StickCPlus) {
-            view_head1(2, 5);
-        } else if (board == m5::board_t::board_M5StickCPlus2) {
-            view_head2();
-        }
+        count = 0;
+        view_head();
     }
 }
 
@@ -150,30 +135,31 @@ void drawCenteredText(int y, const String &text, int textSize, uint16_t textColo
     M5.Display.setCursor(x, y);
     M5.Display.printf("%s", text.c_str());  // Draw the text
 }
-
-void view_head1(int textSize, int y)
+void view_head(void)
 {
+    float bat         = 0;
+    m5::board_t board = M5.getBoard();
+    if (board == m5::board_t::board_M5StickC) {
+        bat = M5.Power.Axp192.getBatteryVoltage();
+    } else if (board == m5::board_t::board_M5StickCPlus) {
+        bat = M5.Power.Axp192.getBatteryVoltage();
+    } else if (board == m5::board_t::board_M5StickCPlus2) {
+        bat = M5.Power.getBatteryVoltage() / 1000.0;
+    }
     M5.Display.fillRect(0, 0, 240, 30, M5.Display.color565(50, 50, 50));
-    M5.Display.setTextSize(textSize);
-    M5.Display.setTextColor(WHITE);
+    M5.Display.setTextSize(2);
+    if (bat > 3.30) {
+        M5.Display.setTextColor(GREEN);
+    } else {
+        M5.Display.setTextColor(RED);
+    }
     char buffer[64] = {0};
-    sprintf(buffer, "%.2fV,%.2fmA", M5.Power.Axp192.getBatteryVoltage(), M5.Power.Axp192.getBatteryDischargeCurrent());
+
+    sprintf(buffer, "BAT:%.3fV", bat);
     String text    = String(buffer);
     int textWidth  = M5.Display.textWidth(text);
     int textHeight = M5.Display.fontHeight();
     int x          = (M5.Display.width() - textWidth) / 2;
-    M5.Display.setCursor(x, y);
-    M5.Display.printf("%s", text.c_str());
-}
-void view_head2(void)
-{
-    M5.Display.fillRect(0, 0, 240, 30, M5.Display.color565(50, 50, 50));
-    M5.Display.setTextSize(2);
-    M5.Display.setTextColor(WHITE);
-    String text    = "MASTER";
-    int textWidth  = M5.Display.textWidth(text);
-    int textHeight = M5.Display.fontHeight();
-    int x          = (M5.Display.width() - textWidth) / 2;
-    M5.Display.setCursor(x, 5);
+    M5.Display.setCursor(x, 7);
     M5.Display.printf("%s", text.c_str());
 }
